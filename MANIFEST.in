@@ -1,0 +1,4 @@
+include stuff-doer/schema.sql
+graft stuff-doer/static
+graft stuff-doer/templates
+global-exclude *.pyc
