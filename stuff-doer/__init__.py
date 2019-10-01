@@ -9,4 +9,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'stuff-doer.sqlite'))
 
+    @app.route('/hello')
+    def hello():
+        return 'Hello, world!'
+
     return app

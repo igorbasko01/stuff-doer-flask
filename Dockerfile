@@ -11,3 +11,9 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
+ENV FLASK_APP=stuff-doer
+ENV FLASK_ENV=development
+
+ENTRYPOINT ["flask"]
+
+CMD ["run"]
