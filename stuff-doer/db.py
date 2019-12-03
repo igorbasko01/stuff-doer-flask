@@ -1,22 +1,16 @@
-import sqlite3
-
 import click
-from flask import current_app, g
-from flask.cli import with_appcontext
+from . import db
 
-def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
+def init_db():
+    db.drop_all()
+    db.create_all()
 
-    return g.db
+@click.command('init-db')
+def init_db_command():
+    """Clear the existing data and create new tables"""
+    click.echo(db)
+    init_db()
+    click.echo('Initialized the database.')
 
-
-def close_db(e=None):
-    db = g.pop('db', None)
-
-    if db is not None:
-        db.close()
+def add_init_db_command(app):
+    app.cli.add_command(init_db_command)

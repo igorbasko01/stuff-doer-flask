@@ -1,26 +1,17 @@
-import os
-
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-def create_app(test_config=None):
-    # Create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'stuff-doer.sqlite'))
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_mapping(
+    SECRET_KEY='dev',
+    SQLALCHEMY_DATABASE_URI='postgres://localhost/postgres',
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
+)
+db = SQLAlchemy(app)
 
-    if test_config is None:
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        app.config.from_mapping(test_config)
+from .db import add_init_db_command
+add_init_db_command(app)
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    @app.route('/hello')
-    def hello():
-        return 'Hello, world!'
-
-    return app
+@app.route('/hello')
+def hello():
+    return 'Hello, world!'
