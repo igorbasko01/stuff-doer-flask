@@ -1,5 +1,5 @@
 import click
-from . import db
+from . import database as db
 
 def init_db():
     db.drop_all()
