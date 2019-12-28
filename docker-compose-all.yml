@@ -9,3 +9,9 @@ services:
       POSTGRES_PASSWORD: example
     volumes:
       - ./datadir:/var/lib/postgresql/data
+  webapp:
+    image: stuff-doer-flask
+    ports:
+      - 5000:5000
+    environment:
+      DB_URI: db

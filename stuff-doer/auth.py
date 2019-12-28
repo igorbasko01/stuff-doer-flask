@@ -4,6 +4,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from .models.user import User
 from . import database as db
+from flask_login import login_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -48,8 +49,9 @@ def login():
             error = 'Incorrect password.'
 
         if error is None:
-            # TODO: Add login_user
-            # TODO: Continue from here: https://flask.palletsprojects.com/en/1.1.x/tutorial/views/#login
-            return
+            login_user(user)
+            return redirect(url_for('index'))
+
+        flash(error)
         
     return render_template('auth/login.html')

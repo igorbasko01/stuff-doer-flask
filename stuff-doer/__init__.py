@@ -1,12 +1,14 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 
 app = Flask(__name__, instance_relative_config=True)
+db_uri = os.getenv('DB_URI', 'localhost')
 app.config.from_mapping(
     SECRET_KEY='dev',
-    SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://postgres:example@localhost/postgres',
+    SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://postgres:example@{0}/postgres'.format(db_uri),
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
 database = SQLAlchemy(app)
