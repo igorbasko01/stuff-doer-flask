@@ -11,3 +11,5 @@ class Task(db.Model):
     taskspace_id = db.Column(db.Integer, nullable=False)
     create_ts = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
     done_ts = db.Column(db.DateTime)
+    priority = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Integer, nullable=False)
