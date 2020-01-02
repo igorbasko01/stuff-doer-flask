@@ -4,10 +4,11 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from .models.user import User
 from . import database as db
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
@@ -55,3 +56,10 @@ def login():
         flash(error)
         
     return render_template('auth/login.html')
+
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
