@@ -4,10 +4,12 @@
 <nav>
   <h1>Stuff Doer</h1>
   <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
+    {% if current_user.is_authenticated %}
+    <li><span>{{ current_user.email }}</span></li>
+    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
+    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
     {% endif %}
   </ul>
 </nav>

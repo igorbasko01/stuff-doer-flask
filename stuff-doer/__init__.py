@@ -21,7 +21,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 from . import auth
+from . import tasks
 app.register_blueprint(auth.bp)
+app.register_blueprint(tasks.bp_task)
 
 
 @app.route('/hello')
@@ -31,4 +33,4 @@ def hello():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get_id(user_id)
+    return User.query.filter(User.id == int(user_id)).first()
