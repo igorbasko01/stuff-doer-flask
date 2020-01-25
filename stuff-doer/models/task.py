@@ -13,3 +13,12 @@ class Task(db.Model):
     done_ts = db.Column(db.DateTime)
     priority = db.Column(db.Integer, nullable=False)
     status = db.Column(db.Integer, nullable=False)
+
+    status_enum = {
+        'WAITING': 0,
+        'READY': 1,
+        'ACTIVE': 2,
+        'READY_PENDING': 3,
+        'HOLD': 4,
+        'FINISHED': 5
+    }

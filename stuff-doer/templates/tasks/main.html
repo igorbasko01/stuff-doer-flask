@@ -3,3 +3,71 @@
 {% block header %}
 <h1>{% block title %}Tasks{% endblock %}</h1>
 {% endblock %}
+{% block content %}
+{{ tasks }}
+<div class="container">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Work</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Add New</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <ul id="tasks-tree" class="list-group">
+                <li id="new-task" class="list-group-item">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="New Task Name" aria-label="New Task Name" aria-describedby="basic-addon2" maxlength="120">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">Add</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="level1 list-group-item">Task 1
+                    <ul class="list-group">
+                        <li id="new-task1" class="list-group-item">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="New Task Name" aria-label="New Task Name" aria-describedby="basic-addon2" maxlength="120">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="level2 list-group-item">Task 1.1
+                            <ul class="list-group">
+                                <li id="new-task2" class="list-group-item">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="New Task Name" aria-label="New Task Name" aria-describedby="basic-addon2" maxlength="120">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button">Add</button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">Task 1.1.1</li>
+                                <li class="list-group-item">Task 1.1.2</li>
+                            </ul>
+                        </li>
+                        <li class="level2 list-group-item">Task 1.2
+                            <ul class="list-group">
+                                <li class="list-group-item">Task 1.2.1</li>
+                                <li class="list-group-item">Task 1.2.2</li>
+                                <li class="list-group-item">Task 1.2.3</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/tasks.js"></script>
+{% endblock %}
