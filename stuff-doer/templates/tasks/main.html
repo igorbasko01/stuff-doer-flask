@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+    <div id="message" class="alert alert-danger" role="alert" hidden></div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Work</a>
@@ -21,64 +22,34 @@
             <ul id="tasks-tree" class="list-group">
                 <li id="new-task" class="list-group-item">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="New Task Name" aria-label="New Task Name" aria-describedby="basic-addon2" maxlength="120">
+                        <input id="text-new-desc" type="text" class="form-control" placeholder="New Task Description" aria-label="Description" aria-describedby="basic-addon2" maxlength="120">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">Add</button>
+                            <input id="text-new-name" type="text" class="form-control" placeholder="New Task Name" aria-label="New task name" aria-describedby="basic-addon2" maxlength="120">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="new-task-pri" autocomplete="off" checked value="1">Normal
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="new-task-pri" autocomplete="off" value="0">High
+                                </label>
+                            </div>
+                            <button id="new-task-btn" class="btn btn-outline-secondary" type="button">Add</button>
                         </div>
                     </div>
                 </li>
-                <li class="level1 list-group-item">Task 1
-                    <ul class="list-group">
-                        <li id="new-task1" class="list-group-item">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="New Task Description" aria-label="Description" aria-describedby="basic-addon2" maxlength="120">
-                                <div class="input-group-append">
-                                    <input type="text" class="form-control" placeholder="New Task Name" aria-label="New task name" aria-describedby="basic-addon2" maxlength="120">
-                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <label class="btn btn-secondary active">
-                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Normal
-                                        </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="radio" name="options" id="option2" autocomplete="off">High
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-outline-secondary" type="button">Add</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="level2 list-group-item">Task 1.1
-                            <ul class="list-group">
-                                <li id="new-task2" class="list-group-item">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="New Task Name" aria-label="New Task Name" aria-describedby="basic-addon2" maxlength="120">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button">Add</button>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">Task 1.1.1</li>
-                                <li class="list-group-item">Task 1.1.2</li>
-                            </ul>
-                        </li>
-                        <li class="level2 list-group-item">Task 1.2
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <p class="p-0 m-0 flex-grow-1">Task 1.2.1</p>
-                                    <button class="btn btn-success">Start</button>
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Other</button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Finish</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-danger" href="#">Delete</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">Task 1.2.2</li>
-                                <li class="list-group-item">Task 1.2.3</li>
-                            </ul>
-                        </li>
-                    </ul>
+                {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <p class="p-0 m-0 flex-grow-1">Task 1</p>
+                    <button class="btn btn-success">Start</button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Other</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Finish</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                    </div>
                 </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
