@@ -24,9 +24,13 @@ $(function () {
             $('#message').removeAttr('hidden');
             $('#message').text(message);
         } else {
-            $.post('add_task', {'name': name, 'desc': description, 'priority': priority})
+            $.post({
+             url: 'add_task',
+             contentType: 'application/json',
+             data: JSON.stringify({name: name, desc: description, priority: priority})
+            })
             .done(function(data, status) { console.log('Success: data: ' + data + ', status: '+status)})
-            .fail(function(xhr, status) { console.log('Failed: xhr: ' + xhr + ', status: ' + status)})
+            .fail(function(xhr, status, error) { console.log(`Failed xhr: ${xhr.responseText}, status: ${status}, error: ${error}`)})
         }
     });
 
