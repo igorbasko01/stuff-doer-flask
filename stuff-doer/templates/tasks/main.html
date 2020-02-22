@@ -39,7 +39,7 @@
                 </li>
                 {% for task in tasks %}
                 <li class="list-group-item d-flex justify-content-between">
-                    <p class="p-0 m-0 flex-grow-1">Task 1</p>
+                    <p class="p-0 m-0 flex-grow-1">{{task.name}} - {{task.description}}</p>
                     <button class="btn btn-success">Start</button>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Other</button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

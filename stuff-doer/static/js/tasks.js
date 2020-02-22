@@ -16,6 +16,7 @@ $(function () {
 
     $('#new-task-btn').on('click', function (e) {
         $('#message').attr('hidden', true);
+        let taskSpace = $(this).closest('.tab-pane').attr('id');
         let priority = parseInt($('input[name="new-task-pri"]:checked').val());
         let description = $('#text-new-desc').val();
         let name = $('#text-new-name').val();
@@ -27,9 +28,9 @@ $(function () {
             $.post({
              url: 'add_task',
              contentType: 'application/json',
-             data: JSON.stringify({name: name, desc: description, priority: priority})
+             data: JSON.stringify({taskSpace: taskSpace, name: name, desc: description, priority: priority})
             })
-            .done(function(data, status) { console.log('Success: data: ' + data + ', status: '+status)})
+            .done(function(data, status, xhr) { console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`)})
             .fail(function(xhr, status, error) { console.log(`Failed xhr: ${xhr.responseText}, status: ${status}, error: ${error}`)})
         }
     });
