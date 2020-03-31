@@ -2,6 +2,14 @@ $(function () {
     //start the tree in an autocollapsed state
 //    $('#tasks-tree ul').hide(400);
 
+    $('#tree').treeview({ data: [
+        {text: "Node1", selectable: false, nodes: [
+            {text: "Node1.1", selectable: false}]}
+        ],
+        collapseIcon: "oi oi-chevron-bottom",
+        expandIcon: "oi oi-chevron-right"}
+    );
+
     $('#dropdownMenuButton').on('click', function (e) {
         console.log("Button pressed...");
     });
