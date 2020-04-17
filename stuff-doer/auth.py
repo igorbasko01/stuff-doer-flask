@@ -4,7 +4,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from .models.user import User
 from . import database as db
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -33,7 +33,10 @@ def register():
 
         flash(error)
 
-    return render_template('auth/register.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('tasks.main'))
+    else:
+        return render_template('auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -55,7 +58,10 @@ def login():
 
         flash(error)
         
-    return render_template('auth/login.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('tasks.main'))
+    else:
+        return render_template('auth/login.html')
 
 
 @bp.route('/logout')
