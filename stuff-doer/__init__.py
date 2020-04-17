@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
@@ -26,9 +26,9 @@ app.register_blueprint(auth.bp)
 app.register_blueprint(tasks.bp_task)
 
 
-@app.route('/hello')
+@app.route('/')
 def hello():
-    return 'Hello, world!'
+    return redirect(url_for('auth.login'))
 
 
 @login_manager.user_loader
