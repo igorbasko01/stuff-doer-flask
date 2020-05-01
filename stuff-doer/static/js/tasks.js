@@ -1,14 +1,8 @@
 $(function () {
-    //start the tree in an autocollapsed state
-//    $('#tasks-tree ul').hide(400);
 
-    $('#tree').treeview({ data: [
-        {text: "Node1", selectable: false, nodes: [
-            {text: "Node1.1", selectable: false}]}
-        ],
-        collapseIcon: "oi oi-chevron-bottom",
-        expandIcon: "oi oi-chevron-right"}
-    );
+    $.get({url: 'get_tasks'})
+    .done(function(data, status, xhr) { populateTree(data['tasks']) })
+    .fail(function(xhr, status, error) { logFail(xhr, status, error) })
 
     $('#dropdownMenuButton').on('click', function (e) {
         console.log("Button pressed...");
@@ -39,15 +33,21 @@ $(function () {
              data: JSON.stringify({taskSpace: taskSpace, name: name, desc: description, priority: priority})
             })
             .done(function(data, status, xhr) { console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`)})
-            .fail(function(xhr, status, error) { console.log(`Failed xhr: ${xhr.responseText}, status: ${status}, error: ${error}`)})
+            .fail(function(xhr, status, error) { logFail(xhr, status, error) })
         }
     });
-
-    // This code opens all hyperlinks in a new window
-    // and avoids anchors
-//    $('#tasks-tree a').not('[href="#"]').attr('target', '_blank');
 });
 
+
+/**
+ * Validates if all the fields are valid for a new task.
+ *
+ * @param description of the task.
+ * @param name of the task.
+ * @param priority of the task.
+ *
+ * @return Returns a tuple of Success/Fail and a relevant message.
+ */
 function validateNewTask(description, name, priority) {
     if (description.trim().length < 1)
         return [false, "Description is missing."]
@@ -56,4 +56,36 @@ function validateNewTask(description, name, priority) {
     if (priority < 0 || priority > 2)
         return [false, "Priority is invalid"]
     return [true, "All is good !"]
+}
+
+/**
+ * Populates the tasks tree.
+ *
+ * Updates the #tree <div> in the HTML file.
+ *
+ * @param Array tasks A list of tasks to add to populate the tree with.
+ */
+function populateTree(tasks) {
+  console.log(`populateTree, tasks: ${tasks}`);
+
+  // TODO: Handle hierarchy. 
+
+  let parsedTasks = tasks.map(t => ({text: t.name, nodes: []}));
+
+  $('#tree').treeview({ data: parsedTasks,
+      collapseIcon: "oi oi-chevron-bottom",
+      expandIcon: "oi oi-chevron-right",
+      highlightSelected: false }
+  );
+}
+
+/**
+ * Print log of failed HttpRequest.
+ *
+ * @param xhr of the request.
+ * @param status of the requests.
+ * @param error of the error.
+ */
+function logFail(xhr, status, error) {
+  console.log(`Failed xhr: ${xhr.responseText}, status: ${status}, error: ${error}`)
 }

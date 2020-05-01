@@ -10,10 +10,7 @@ bp_task = Blueprint('tasks', __name__, url_prefix='/tasks')
 @bp_task.route('/main', methods=('GET',))
 @login_required
 def main():
-    tasks = Task.query.filter(Task.user_id == current_user.id
-                              and Task.status != Task.status_enum['FINISHED']).all()
-    app.logger.info("Got the following tasks: %s", tasks)
-    return render_template('tasks/main.html', tasks=tasks)
+    return render_template('tasks/main.html')
 
 
 @bp_task.route('/add_task', methods=('POST',))
@@ -33,3 +30,13 @@ def add_task():
     db.session.commit()
 
     return Response(status=200)
+
+
+@bp_task.route('/get_tasks', methods=('GET',))
+@login_required
+def get_tasks():
+    tasks = Task.query.filter(Task.user_id == current_user.id
+                              and Task.status != Task.status_enum['FINISHED']).all()
+    dict_tasks = [{'id': t.id, 'name': t.name, 'desc': t.description, 'path': t.path} for t in tasks]
+    app.logger.info("Got the following tasks: %s", dict_tasks)
+    return {'tasks': dict_tasks}
