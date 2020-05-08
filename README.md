@@ -26,9 +26,12 @@ make rundb
 And now for the app:
 ```shell script
 export FLASK_APP=stuff-doer
+flask init-db
 flask run
 ```
 It should start the server, and it is available at: http://localhost:5000/
+
+*NOTE*: `flask init-db` will recreate the tables, so you mostly should run it once.
 
 ### In Deployment
 Before deploying the webapp, it needs to be built by:
