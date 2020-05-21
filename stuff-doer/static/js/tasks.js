@@ -1,9 +1,5 @@
 $(function () {
 
-    $.get({url: 'get_tasks'})
-    .done(function(data, status, xhr) { populateTree(data['tasks']) })
-    .fail(function(xhr, status, error) { logFail(xhr, status, error) })
-
     $('#dropdownMenuButton').on('click', function (e) {
         console.log("Button pressed...");
     });
@@ -16,7 +12,7 @@ $(function () {
         }
     });
 
-    $('#new-task-btn').on('click', function (e) {
+    $('body').on('click', '#new-task-btn', function (e) {
         $('#message').attr('hidden', true);
         let taskSpace = $(this).closest('.tab-pane').attr('id');
         let priority = parseInt($('input[name="new-task-pri"]:checked').val());
@@ -32,10 +28,15 @@ $(function () {
              contentType: 'application/json',
              data: JSON.stringify({taskSpace: taskSpace, name: name, desc: description, priority: priority})
             })
-            .done(function(data, status, xhr) { console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`)})
+            .done(function(data, status, xhr) {
+              console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`);
+              getTasks();
+            })
             .fail(function(xhr, status, error) { logFail(xhr, status, error) })
         }
     });
+
+    getTasks();
 });
 
 
@@ -59,6 +60,15 @@ function validateNewTask(description, name, priority) {
 }
 
 /**
+ * Retrieve tasks and populate them on page.
+ */
+function getTasks() {
+  $.get({url: 'get_tasks'})
+  .done(function(data, status, xhr) { populateTree(data['tasks']) })
+  .fail(function(xhr, status, error) { logFail(xhr, status, error) })
+}
+
+/**
  * Populates the tasks tree.
  *
  * Updates the #tree <div> in the HTML file.
@@ -68,14 +78,20 @@ function validateNewTask(description, name, priority) {
 function populateTree(tasks) {
   console.log(`populateTree, tasks: ${tasks}`);
 
-  // TODO: Handle hierarchy. 
+  // TODO: Handle hierarchy.
+  tasks.unshift({type: 'new-task', parentTaskId: null});
 
-  let parsedTasks = tasks.map(t => ({text: t.name, nodes: []}));
+  let parsedTasks = tasks.map(t => (
+    {type: t.type == undefined ? 'task' : t.type,
+    taskId: t.id,
+    text: t.name,
+    nodes: []}
+  ));
 
   $('#tree').treeview({ data: parsedTasks,
       collapseIcon: "oi oi-chevron-bottom",
       expandIcon: "oi oi-chevron-right",
-      highlightSelected: false }
+      highlightSelected: false, enableLinks: true }
   );
 }
 

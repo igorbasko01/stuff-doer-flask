@@ -320,7 +320,7 @@
 
 		var target = $(event.target);
 		var node = this.findNode(target);
-		if (!node || node.state.disabled) return;
+		if (!node || node.state.disabled || node.type === 'new-task') return;
 
 		var classList = target.attr('class') ? target.attr('class').split(' ') : [];
 		if ((classList.indexOf('expand-icon') !== -1)) {
@@ -498,26 +498,17 @@
 		this.$element.empty().append(this.$wrapper.empty());
 
 		// Build tree
-		this.buildTree(this.tree, 0);
+		this.buildTree(this.tree, 0, null);
 	};
 
 	// Starting from the root node, and recursing down the
 	// structure we build the tree one node at a time
-	Tree.prototype.buildTree = function (nodes, level) {
+	Tree.prototype.buildTree = function (nodes, level, rootTaskId) {
 
 		if (!nodes) return;
 		level += 1;
 
 		var _this = this;
-		var newTaskItem = $(_this.template.newTaskWrap);
-
-		newTaskItem.append($(_this.template.newTaskInput))
-		    .append($(_this.template.newTaskInnerWrap)
-		    .append($(_this.template.newTaskInnerInput))
-		    .append($(_this.template.newTaskInnerPri))
-		    .append($(_this.template.newTaskAddButton)));
-
-		_this.$wrapper.append(newTaskItem);
 
 		$.each(nodes, function addNodes(id, node) {
 
@@ -537,7 +528,7 @@
 
 			// Add expand, collapse or empty spacer icons
 			var classList = [];
-			if (node.nodes) {
+			if (node.type !== 'new-task' && node.nodes) {
 				classList.push('expand-icon');
 				if (node.state.expanded) {
 					classList.push(_this.options.collapseIcon);
@@ -616,12 +607,23 @@
 				});
 			}
 
+			// If it is an adding task node.
+			if (node.type === 'new-task') {
+				treeItem.append($(_this.template.newTaskWrap));
+
+				treeItem.append($(_this.template.newTaskInput))
+				    .append($(_this.template.newTaskInnerWrap)
+				    .append($(_this.template.newTaskInnerInput))
+				    .append($(_this.template.newTaskInnerPri))
+				    .append($(_this.template.newTaskAddButton)));
+			}
+
 			// Add item to the tree
 			_this.$wrapper.append(treeItem);
 
 			// Recursively add child ndoes
 			if (node.nodes && node.state.expanded && !node.state.disabled) {
-				return _this.buildTree(node.nodes, level);
+				return _this.buildTree(node.nodes, level, node.taskId);
 			}
 		});
 	};
