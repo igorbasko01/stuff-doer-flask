@@ -12,13 +12,13 @@ $(function () {
         }
     });
 
-    $('body').on('click', '#new-task-btn', function (e) {
+    $('body').on('click', '.new-task-btn', function (e) {
         $('#message').attr('hidden', true);
-        let taskSpace = $(this).closest('.tab-pane').attr('id');
-        let priority = parseInt($('input[name="new-task-pri"]:checked').val());
-        let description = $('#text-new-desc').val();
-        let name = $('#text-new-name').val();
-        let [isValid, message] = validateNewTask(description, name, priority);
+        const taskSpace = $(this).closest('.tab-pane').attr('id');
+        const priority = parseInt($(this).siblings().find('input[name="new-task-pri"]:checked').val());
+        const description = $(this).parent().siblings('.text-new-desc').val();
+        const name = $(this).siblings('.text-new-name').val();
+        const [isValid, message] = validateNewTask(description, name, priority);
         if (!isValid) {
             $('#message').removeAttr('hidden');
             $('#message').text(message);

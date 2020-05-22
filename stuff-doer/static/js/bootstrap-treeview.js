@@ -706,11 +706,11 @@
 		link: '<a href="#" style="color:inherit;"></a>',
 		badge: '<span class="badge"></span>',
 		newTaskWrap: '<div class="input-group"></div>',
-		newTaskInput: '<input id="text-new-desc" type="text" class="form-control" placeholder="New Task Description" aria-label="Description" aria-describedby="basic-addon2" maxlength="120">',
+		newTaskInput: '<input type="text" class="form-control text-new-desc" placeholder="New Task Description" aria-label="Description" aria-describedby="basic-addon2" maxlength="120">',
 		newTaskInnerWrap: '<div class="input-group-append"></div>',
-		newTaskInnerInput: '<input id="text-new-name" type="text" class="form-control" placeholder="New Task Name" aria-label="New task name" aria-describedby="basic-addon2" maxlength="120">',
+		newTaskInnerInput: '<input type="text" class="form-control text-new-name" placeholder="New Task Name" aria-label="New task name" aria-describedby="basic-addon2" maxlength="120">',
 		newTaskInnerPri: '<div class="btn-group btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="new-task-pri" autocomplete="off" checked value="1">Normal</label><label class="btn btn-secondary"><input type="radio" name="new-task-pri" autocomplete="off" value="0">High</label></div>',
-		newTaskAddButton: '<button id="new-task-btn" class="btn btn-outline-secondary" type="button">Add</button>'
+		newTaskAddButton: '<button class="btn btn-outline-secondary new-task-btn" type="button">Add</button>'
 	};
 
 	Tree.prototype.css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}'
