@@ -79,19 +79,21 @@ function populateTree(tasks) {
   console.log(`populateTree, tasks: ${tasks}`);
 
   // TODO: Handle hierarchy.
-  tasks.unshift({type: 'new-task', parentTaskId: null});
 
   let parsedTasks = tasks.map(t => (
     {type: t.type == undefined ? 'task' : t.type,
     taskId: t.id,
     text: t.name,
-    nodes: []}
+    nodes: [{type: 'new-task', parentTaskId: t.id}]}
   ));
+
+  // Adds root task creation node.
+  parsedTasks.unshift({type: 'new-task', parentTaskId: null});
 
   $('#tree').treeview({ data: parsedTasks,
       collapseIcon: "oi oi-chevron-bottom",
       expandIcon: "oi oi-chevron-right",
-      highlightSelected: false, enableLinks: true }
+      highlightSelected: false, enableLinks: true, levels: 0 }
   );
 }
 
