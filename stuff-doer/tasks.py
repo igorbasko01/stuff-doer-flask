@@ -24,7 +24,7 @@ def add_task():
                         name=new_task['name'],
                         description=new_task['desc'],
                         taskspace_id=0,
-                        path='.',
+                        parent_path=new_task['parentPath'],
                         priority=new_task['priority'],
                         status=Task.status_enum['WAITING']))
     db.session.commit()
@@ -37,6 +37,6 @@ def add_task():
 def get_tasks():
     tasks = Task.query.filter(Task.user_id == current_user.id
                               and Task.status != Task.status_enum['FINISHED']).all()
-    dict_tasks = [{'id': t.id, 'name': t.name, 'desc': t.description, 'path': t.path} for t in tasks]
+    dict_tasks = [{'id': t.id, 'name': t.name, 'desc': t.description, 'parentPath': t.parent_path} for t in tasks]
     app.logger.info("Got the following tasks: %s", dict_tasks)
     return {'tasks': dict_tasks}

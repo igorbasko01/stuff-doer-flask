@@ -1,43 +1,59 @@
+const MESSAGE_DOM_ID = '#message'
+
 $(function () {
 
-    $('#dropdownMenuButton').on('click', function (e) {
-        console.log("Button pressed...");
-    });
-
-    $('#tasks-tree li').on('click', function (e) {
-        if (!e.originalEvent.target.classList.contains("btn")) {
-            e.stopPropagation(); // prevent links from toggling the nodes
-            console.log("Class: " + $(this)[0].className);
-            $(this).children('ul').slideToggle();
-        }
-    });
-
     $('body').on('click', '.new-task-btn', function (e) {
-        $('#message').attr('hidden', true);
-        const taskSpace = $(this).closest('.tab-pane').attr('id');
-        const priority = parseInt($(this).siblings().find('input[name="new-task-pri"]:checked').val());
-        const description = $(this).parent().siblings('.text-new-desc').val();
-        const name = $(this).siblings('.text-new-name').val();
-        const [isValid, message] = validateNewTask(description, name, priority);
-        if (!isValid) {
-            $('#message').removeAttr('hidden');
-            $('#message').text(message);
-        } else {
-            $.post({
-             url: 'add_task',
-             contentType: 'application/json',
-             data: JSON.stringify({taskSpace: taskSpace, name: name, desc: description, priority: priority})
-            })
-            .done(function(data, status, xhr) {
-              console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`);
-              getTasks();
-            })
-            .fail(function(xhr, status, error) { logFail(xhr, status, error) })
-        }
+        hideMessage();
+        const task = getNewTaskData($(this), e);
+        const [isValid, message] = validateNewTask(task.description, task.name, task.priority);
+        isValid ? sendAddTaskRequest(task) : showMessage(message);
     });
 
     getTasks();
 });
+
+function sendAddTaskRequest(task) {
+  $.post({
+   url: 'add_task',
+   contentType: 'application/json',
+   data: JSON.stringify({
+     taskSpace: task.taskSpace,
+     name: task.name,
+     desc: task.description,
+     priority: task.priority,
+     parentPath: task.parentPath})
+  })
+  .done(function(data, status, xhr) {
+    console.log(`Success: data: ${data}, status: ${status}, code: ${xhr.status}`);
+    getTasks();
+  })
+  .fail(function(xhr, status, error) { logFail(xhr, status, error) })
+}
+
+function showMessage(message) {
+  $(MESSAGE_DOM_ID).removeAttr('hidden');
+  $(MESSAGE_DOM_ID).text(message);
+}
+
+function hideMessage() {
+  $(MESSAGE_DOM_ID).attr('hidden', true);
+}
+
+function getNewTaskData(jqThis, event) {
+  const taskSpace = jqThis.closest('.tab-pane').attr('id');
+  const priority = parseInt(jqThis.siblings().find('input[name="new-task-pri"]:checked').val());
+  const description = jqThis.parent().siblings('.text-new-desc').val();
+  const name = jqThis.siblings('.text-new-name').val();
+  const parentPath = jqThis.attr('parent-path');
+  const parentTaskID = jqThis.attr('task-id');
+
+  return {taskSpace: taskSpace,
+    priority: priority,
+    description: description,
+    name: name,
+    parentPath: parentPath,
+    parentTaskID: parentTaskID};
+}
 
 
 /**
@@ -84,11 +100,11 @@ function populateTree(tasks) {
     {type: t.type == undefined ? 'task' : t.type,
     taskId: t.id,
     text: t.name,
-    nodes: [{type: 'new-task', parentTaskId: t.id}]}
+    nodes: [{type: 'new-task', parentPath: t.parentPath+t.id}]}
   ));
 
   // Adds root task creation node.
-  parsedTasks.unshift({type: 'new-task', parentTaskId: null});
+  parsedTasks.unshift({type: 'new-task', parentPath: '.'});
 
   $('#tree').treeview({ data: parsedTasks,
       collapseIcon: "oi oi-chevron-bottom",

@@ -615,7 +615,9 @@
 				    .append($(_this.template.newTaskInnerWrap)
 				    .append($(_this.template.newTaskInnerInput))
 				    .append($(_this.template.newTaskInnerPri))
-				    .append($(_this.template.newTaskAddButton)));
+				    .append($(_this.template.newTaskAddButton)
+							.attr('parent-path', node.parentPath)
+							.attr('task-id', node.parentTaskId)));
 			}
 
 			// Add item to the tree
