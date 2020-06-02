@@ -100,11 +100,11 @@ function populateTree(tasks) {
     {type: t.type == undefined ? 'task' : t.type,
     taskId: t.id,
     text: t.name,
-    nodes: [{type: 'new-task', parentPath: t.parentPath+t.id}]}
+    nodes: [{type: 'new-task', parentPath: t.parentPath+'.'+t.id}]}
   ));
 
   // Adds root task creation node.
-  parsedTasks.unshift({type: 'new-task', parentPath: '.'});
+  parsedTasks.unshift({type: 'new-task', parentPath: ''});
 
   $('#tree').treeview({ data: parsedTasks,
       collapseIcon: "oi oi-chevron-bottom",
