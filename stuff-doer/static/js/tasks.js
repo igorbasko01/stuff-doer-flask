@@ -95,6 +95,7 @@ function populateTree(tasks) {
   console.log(`populateTree, tasks: ${tasks}`);
 
   // TODO: Handle hierarchy.
+  const index = indexTasks(tasks);
 
   let parsedTasks = tasks.map(t => (
     {type: t.type == undefined ? 'task' : t.type,
@@ -111,6 +112,14 @@ function populateTree(tasks) {
       expandIcon: "oi oi-chevron-right",
       highlightSelected: false, enableLinks: true, levels: 0 }
   );
+}
+
+function indexTasks(tasks) {
+  return tasks.reduce((dict, task) => {
+    const parent = task.parentPath.split(".").slice(-1)
+    dict[parent] = task.id
+    return dict
+  }, {});
 }
 
 /**
